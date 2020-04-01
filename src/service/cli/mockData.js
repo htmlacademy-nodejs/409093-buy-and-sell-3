@@ -28,16 +28,12 @@ module.exports = {
     `Животные`,
     `Журналы`,
   ],
-  OFFER_TYPE: {
+  AdType: {
     offer: `offer`,
     sale: `sale`,
   },
-  SUM_RESTRICT: {
-    min: 1000,
-    max: 100000,
-  },
-  PICTURE_RESTRICT: {
-    min: 1,
-    max: 16,
-  }
+  AD_PRICE_MIN: 1000,
+  AD_PRICE_MAX: 100000,
+  PICTURE_NAME_MIN: 1,
+  PICTURE_NAME_MAX: 16
 };
