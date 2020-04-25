@@ -38,7 +38,7 @@ const readContent = async (filePath) => {
 
 const generateAds = (count, titles, categories, sentences) => (
   Array(count).fill().map(() => ({
-    category: [categories[getRandomInt(0, categories.length - 1)]],
+    category: shuffle(categories).slice(getRandomInt(0, categories.length - 1)),
     description: shuffle(sentences).slice(1, 5).join(` `),
     picture: getPictureFileName(getRandomInt(PICTURE_NAME_MIN, PICTURE_NAME_MAX)),
     title: titles[getRandomInt(0, titles.length - 1)],
