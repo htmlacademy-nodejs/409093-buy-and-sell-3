@@ -8,6 +8,7 @@ const {
 } = require(`../../utils`);
 const {
   DEFAULT_COUNT,
+  MAX_COUNT,
   FILE_NAME,
   EXIT_CODE,
   FILE_SENTENCES_PATH,
@@ -37,7 +38,7 @@ const readContent = async (filePath) => {
 
 const generateAds = (count, titles, categories, sentences) => (
   Array(count).fill().map(() => ({
-    category: [categories[getRandomInt(0, categories.length - 1)]],
+    category: shuffle(categories).slice(getRandomInt(0, categories.length - 1)),
     description: shuffle(sentences).slice(1, 5).join(` `),
     picture: getPictureFileName(getRandomInt(PICTURE_NAME_MIN, PICTURE_NAME_MAX)),
     title: titles[getRandomInt(0, titles.length - 1)],
@@ -52,14 +53,23 @@ const run = async (args) => {
   const categories = await readContent(FILE_CATEGORIES_PATH);
   const [count] = args;
   const countOffer = Number.parseInt(count, 10) || DEFAULT_COUNT;
-  const content = JSON.stringify(generateAds(countOffer, titles, categories, sentences));
 
-  try {
-    await fs.writeFile(FILE_NAME, content);
-    console.info(chalk.green(`Operation success. File created.`));
+  if (countOffer > MAX_COUNT) {
+    console.error(chalk.green(`Не больше 1000 объявлений`));
     process.exitCode = EXIT_CODE.success;
-  } catch (err) {
-    console.error(chalk.red(`Can't write data to file...`));
+  } else if (titles.length && sentences.length && categories.length) {
+    const content = JSON.stringify(generateAds(countOffer, titles, categories, sentences));
+
+    try {
+      await fs.writeFile(FILE_NAME, content);
+      console.info(chalk.green(`Operation success. File created.`));
+      process.exitCode = EXIT_CODE.success;
+    } catch (err) {
+      console.error(chalk.red(`Can't write data to file...`));
+      process.exitCode = EXIT_CODE.error;
+    }
+  } else {
+    console.error(chalk.red(`Can't read file...`));
     process.exitCode = EXIT_CODE.error;
   }
 };
