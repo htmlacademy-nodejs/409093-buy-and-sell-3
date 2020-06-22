@@ -10,7 +10,6 @@ class OfferService {
 
   create(offer) {
     const newOffer = Object.assign({id: nanoid(MAX_ID_LENGTH), comments: []}, offer);
-
     this._offers.push(newOffer);
     return newOffer;
   }

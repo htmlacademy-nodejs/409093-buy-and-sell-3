@@ -62,8 +62,8 @@ module.exports = (app, offerService, commentService) => {
         .send(`Not found`);
     }
 
-    return res.status(HttpCode.OK)
-      .json(offer);
+    return res.status(204)
+      .json({});
   });
 
   route.get(`/:offerId/comments`, offerExist(offerService), (req, res) => {

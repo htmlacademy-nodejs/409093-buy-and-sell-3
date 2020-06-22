@@ -6,8 +6,10 @@ class SearchService {
   }
 
   findAll(searchText) {
+    const text = searchText.toLowerCase().replace(/\s+/g, ` `).trim();
+
     return this._offers.
-      filter((offer) => offer.title.includes(searchText));
+      filter((offer) => offer.title.toLowerCase().includes(text));
   }
 
 }
